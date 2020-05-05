@@ -41,23 +41,24 @@ for i in range(1,lens):
 	features.append("GaborWavelet_1_"+str(i))
 
 df = pd.DataFrame(data=data[1:], columns=features)
+data = []
 randomlize_dataset = True
 if randomlize_dataset:
 	trainset, testset = train_test_split(df,test_size=0.3)
 	X_train,y_train = Separating_x_y(trainset)
 	X_test, y_test = Separating_x_y(testset)
-	print(X_train[0])
+
+	# Perform PCA on standarized data
+	pca = PCA(n_components=30)
+	X_train = pca.fit_transform(X_train)
+	X_test = pca.transform(X_test)
+	print(y_train)
 
 	# Standardizing the features
 	std_scaler = StandardScaler()
 	X_train = std_scaler.fit_transform(X_train)
 	X_test = std_scaler.transform(X_test)
 
-	# Perform PCA on standarized data
-	pca = PCA(n_components=100)
-	X_train = pca.fit_transform(X_train)
-	X_test = pca.transform(X_test)
-	print(y_train)
 	y_train = y_train.astype('int')
 	y_test = y_test.astype('int')
 
